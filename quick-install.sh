@@ -5,6 +5,10 @@
 
 sudo apt update
 
+echo 'some packages is neeed this libfuse2 to run'
+sudo apt-get install -y libfuse2
+
+
 # Just in case
 sudo apt install -y git wget autoconf vim curl
 
@@ -101,11 +105,6 @@ sudo sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stabl
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 sudo apt-get install -y google-chrome-stable
 
-# Install Sublime Text
-wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-sudo apt-get install -y apt-transport-https
-echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-sudo apt-get install -y sublime-text
 
 # Install Node.js
 curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash - && sudo apt-get install -y nodejs
@@ -127,4 +126,40 @@ echo 'eval "$(starship init bash)"' >> .bashrc
 echo 'eval "$(starship init zsh)"' >> .zshrc
 rm install_starship.sh
 
-echo -e "\e[32mSuccess !"
+### Installing docker,
+
+echo 'installing docker'
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+apt-cache policy docker-ce
+sudo apt install docker-ce
+echo 'starting demon'
+sudo systemctl status docker
+sudo usermod -aG docker ${USER}
+su - ${USER}
+echo 'installing code'
+sudo snap install code --classic
+echo 'Installing spotify'
+sudo snap install spotify
+echo 'installing discord'
+sudo snap install discord
+echo 'instlling golang'
+sudo snap install go --classic
+echo 'installing rubymine'
+sudo snap install rubymine --classic
+
+sudo apt install ruby-full
+
+sudo apt install git curl autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
+
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+source ~/.zshrc
+
+
+### Installing Pip
+
+sudo apt install python3-pip

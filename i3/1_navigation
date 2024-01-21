@@ -70,8 +70,8 @@ bindsym $mod+Shift+9 move container to workspace number 9
 # Assign apps to workspaces
 assign [class="Google-chrome"] → $w1
 assign [class="Firefox"] → $w1
-assign [class="jetbrains-phpstorm" window_type="normal"] → $w3
-assign [class="jetbrains-webstorm" window_type="normal"] → $w3
+assign [class="jetbrains-rubymine" window_type="normal"] → $w3
+assign [class="jetbrains-rider" window_type="normal"] → $w3
 assign [class="jetbrains-goland" window_type="normal"] → $w3
 
 # Assign workspaces to output

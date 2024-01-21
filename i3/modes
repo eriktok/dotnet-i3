@@ -19,15 +19,12 @@ mode "Resize mode" {
 bindsym $mod+r mode "Resize mode"
 
 # Quick Lauch mode
-set $mode_launch Chrome | Nautilus | Sublime | GoLand | WebStorm | Discord
+set $mode_launch Chrome | RubyMine | Discord | Spotify
 mode "$mode_launch" {
     bindsym c exec --no-startup-id google-chrome; mode "default"
-    bindsym n exec --no-startup-id nautilus; mode "default"
-    bindsym s exec --no-startup-id subl; mode "default"
-    bindsym g exec --no-startup-id goland; mode "default"
-    bindsym w exec --no-startup-id webstorm; mode "default"
+    bindsym r exec --no-startup-id rubymine; mode "default"
     bindsym d exec --no-startup-id discord; mode "default"
-
+    bindsym d exec --no-startup-id spotify; mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+Shift+Tab mode "$mode_launch"
