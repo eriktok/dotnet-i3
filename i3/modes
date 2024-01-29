@@ -19,12 +19,12 @@ mode "Resize mode" {
 bindsym $mod+r mode "Resize mode"
 
 # Quick Lauch mode
-set $mode_launch Chrome | RubyMine | Discord | Spotify
+set $mode_launch Chrome | Rider | Discord | Spotify
 mode "$mode_launch" {
     bindsym c exec --no-startup-id google-chrome; mode "default"
-    bindsym r exec --no-startup-id rubymine; mode "default"
+    bindsym r exec --no-startup-id rider; mode "default"
     bindsym d exec --no-startup-id discord; mode "default"
-    bindsym d exec --no-startup-id spotify; mode "default"
+    bindsym s exec --no-startup-id spotify; mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+Shift+Tab mode "$mode_launch"

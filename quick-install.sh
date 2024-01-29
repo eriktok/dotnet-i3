@@ -3,20 +3,16 @@
 # Usage:
 # curl -fsSL https://raw.githubusercontent.com/bokub/i3-config/master/quick-install.sh | bash
 
+# Update package repositories
 sudo apt update
 
-echo 'some packages is neeed this libfuse2 to run'
-sudo apt-get install -y libfuse2
-
-
-# Just in case
-sudo apt install -y git wget autoconf vim curl
+# Install required dependencies
+sudo apt-get install -y libfuse2 git wget autoconf vim curl
 
 # Install Regolith
 wget -qO - https://regolith-desktop.org/regolith.key | \
 gpg --dearmor | sudo tee /usr/share/keyrings/regolith-archive-keyring.gpg > /dev/null
-echo deb "[arch=amd64 signed-by=/usr/share/keyrings/regolith-archive-keyring.gpg] \
-https://regolith-desktop.org/release-ubuntu-jammy-amd64 jammy main" | \
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/regolith-archive-keyring.gpg] https://regolith-desktop.org/release-ubuntu-jammy-amd64 jammy main" | \
 sudo tee /etc/apt/sources.list.d/regolith.list
 sudo apt update
 sudo apt install -y regolith-desktop
@@ -24,35 +20,35 @@ sudo apt upgrade
 
 # Uninstall unwanted Regolith packages
 sudo apt remove -y \
-regolith-rofication \
-regolith-i3-navigation \
-regolith-i3-resize \
-regolith-i3-workspace-config \
-regolith-i3-resize \
-regolith-i3-session \
-regolith-i3-base-launchers \
-regolith-i3-i3xrocks \
-regolith-i3-networkmanager \
-regolith-i3-user-programs \
-regolith-i3-unclutter \
-regolith-i3-next-workspace \
-regolith-i3-compositor \
-regolith-i3-default-style \
-regolith-i3-ilia \
-regolith-i3-ftue \
-regolith-i3-swap-focus \
-regolith-i3-control-center-regolith \
-regolith-i3-gaps-partial
+  regolith-rofication \
+  regolith-i3-navigation \
+  regolith-i3-resize \
+  regolith-i3-workspace-config \
+  regolith-i3-resize \
+  regolith-i3-session \
+  regolith-i3-base-launchers \
+  regolith-i3-i3xrocks \
+  regolith-i3-networkmanager \
+  regolith-i3-user-programs \
+  regolith-i3-unclutter \
+  regolith-i3-next-workspace \
+  regolith-i3-compositor \
+  regolith-i3-default-style \
+  regolith-i3-ilia \
+  regolith-i3-ftue \
+  regolith-i3-swap-focus \
+  regolith-i3-control-center-regolith \
+  regolith-i3-gaps-partial
 
 # Install additional dependencies
 sudo apt install -y \
-regolith-look-dracula \
-regolith-compositor-picom-glx \
-dunst \
-acpi \
-lm-sensors \
-playerctl
-:
+  regolith-look-dracula \
+  regolith-compositor-picom-glx \
+  dunst \
+  acpi \
+  lm-sensors \
+  playerctl
+
 sudo add-apt-repository -y ppa:peek-developers/stable
 sudo apt update
 sudo apt install -y peek
@@ -79,12 +75,15 @@ ln -s ~/.i3-config/bar ~/.config/regolith2/i3xrocks/conf.d
 mkdir -p ~/.config/dunst
 ln -s ~/.i3-config/dunstrc ~/.config/dunst/dunstrc
 rm -f ~/.config/regolith2/Xresources && ln -s ~/.i3-config/Xresources ~/.config/regolith2/Xresources
-
-# Download and install font-awesome
+mkdir -p ~/scripts
+# Create symbolic links for scripts in ~/.local/bin
+for script in ~/scripts/*; do
+  ln -s "$script" ~/.local/bin/$(basename "$script")
+done
+# Download and install fonts
 sudo mkdir -p /usr/local/share/fonts/opentype/font-awesome
 sudo wget "https://github.com/duyplus/fontawesome-pro/blob/master/otfs/Font%20Awesome%206%20Pro-Solid-900.otf?raw=true" -O '/usr/local/share/fonts/opentype/font-awesome/Font Awesome 6 Pro-Solid-900.otf'
 
-# Download and install Jetbrains Mono
 sudo mkdir -p /usr/local/share/fonts/JetBrainsMono
 cd && wget https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip
 sudo unzip JetBrainsMono-2.242.zip -d /usr/local/share/fonts/JetBrainsMono
@@ -106,10 +105,6 @@ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-ke
 sudo apt-get install -y google-chrome-stable
 
 
-# Install Node.js
-curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash - && sudo apt-get install -y nodejs
-sudo apt-get install -y build-essential
-
 # Install rivalcfg
 sudo apt-get install -y python3-pip python3-dev python3-setuptools libusb-1.0-0-dev libudev-dev
 sudo pip3 install rivalcfg
@@ -126,40 +121,57 @@ echo 'eval "$(starship init bash)"' >> .bashrc
 echo 'eval "$(starship init zsh)"' >> .zshrc
 rm install_starship.sh
 
-### Installing docker,
-
-echo 'installing docker'
+# Install Docker
+echo 'installing Docker'
 sudo apt install apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 apt-cache policy docker-ce
 sudo apt install docker-ce
-echo 'starting demon'
+echo 'starting daemon'
 sudo systemctl status docker
 sudo usermod -aG docker ${USER}
-su - ${USER}
-echo 'installing code'
-sudo snap install code --classic
-echo 'Installing spotify'
-sudo snap install spotify
-echo 'installing discord'
-sudo snap install discord
-echo 'instlling golang'
-sudo snap install go --classic
-echo 'installing rubymine'
-sudo snap install rubymine --classic
 
-sudo apt install ruby-full
 
+# Install Git and other developer tools
 sudo apt install git curl autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
 
+# Install rbenv for managing Ruby versions
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
 echo 'eval "$(rbenv init -)"' >> ~/.zshrc
 source ~/.zshrc
 
 
-### Installing Pip
-
+# Installing sdk
+sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
+sudo apt-get update && sudo apt-get install -y aspnetcore-runtime-8.0
+sudo apt-get install -y openjdk-11-jdk
 sudo apt install python3-pip
+sudo snap install go --classic
+sudo snap install rubymine --classic
+sudo apt install ruby-full
+
+
+
+### Installing k9s
+sudo snap install kubectl--classic
+
+### Installing IDE's
+sudo apt install vim -y
+sudo snap install code --classic
+sudo snap install android-studio --classic
+sudo snap install intellij-idea-ultimate --classic
+sudo snap install rider --classic
+sudo snap install rubymine --classic
+curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash - && sudo apt-get install -y nodejs
+sudo apt-get install -y build-essential
+
+
+### Media and communication application
+ sudo snap install spotify
+ sudo snap install discord
+ sudo snap install slack
+
+sudo apt-get install jq
